@@ -472,6 +472,29 @@ var flatten = function(array) {
 // 31. Given a string, return an object containing tallies of each letter.
 // letterTally('potato'); // {p:1, o:2, t:2, a:1}
 var letterTally = function(str, obj) {
+  if (str.length === 0) {
+    return {};
+  }
+  if (str.length === 1) {
+    if (obj.hasOwnProperty(str[0])) {
+      obj[str[0]] ++;
+      } else {
+        obj[str[0]] = 1;
+      }
+      return obj;
+  }
+  if (obj === undefined ) {
+    var obj = {}
+    obj[str[0]] = 1
+  } else {
+   if (obj.hasOwnProperty(str[0])) {
+   obj[str[0]] ++;
+   } else {
+     obj[str[0]] = 1;
+   }
+  }
+  return letterTally(str.slice(1), obj)
+
 };
 
 // 32. Eliminate consecutive duplicates in a list. If the list contains repeated
@@ -480,19 +503,55 @@ var letterTally = function(str, obj) {
 // compress([1,2,2,3,4,4,5,5,5]) // [1,2,3,4,5]
 // compress([1,2,2,3,4,4,2,5,5,5,4,4]) // [1,2,3,4,2,5,4]
 var compress = function(list) {
+  var arr = []
+  if (list.length === 0) {
+    return [];
+  }
+  if (list[0] === list[1]) {
+    arr = arr.concat(compress(list.slice(1)));
+  } else {
+    arr.push(list[0]);
+    arr = arr.concat(compress(list.slice(1)));
+  }
+
+  return arr;
 };
 
 // 33. Augment every element in a list with a new value where each element is an array
 // itself.
 // augmentElements([[],[3],[7]], 5); // [[5],[3,5],[7,5]]
 var augmentElements = function(array, aug) {
+  var arr = [];
+  var index = array[0];
+  if(array.length === 1) {
+     index.push(aug)
+     return [index];
+  }
+  index.push(aug);
+  arr.push(index);
+  arr = arr.concat(augmentElements(array.slice(1), aug));
+  return arr;
 };
 
 // 34. Reduce a series of zeroes to a single 0.
 // minimizeZeroes([2,0,0,0,1,4]) // [2,0,1,4]
 // minimizeZeroes([2,0,0,0,1,0,0,4]) // [2,0,1,0,4]
 var minimizeZeroes = function(array) {
+  var arr = []
+  if (array.length === 0) {
+    return [];
+  }
+  if (array[0] === array[1] && array[0] === 0) {
+    arr = arr.concat(minimizeZeroes(array.slice(1)));
+  } else {
+    arr.push(array[0]);
+    arr = arr.concat(minimizeZeroes(array.slice(1)));
+  }
+
+  return arr;
 };
+
+
 
 // 35. Alternate the numbers in an array between positive and negative regardless of
 // their original sign. The first number in the index always needs to be positive.
